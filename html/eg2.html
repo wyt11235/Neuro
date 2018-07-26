@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>表格操作演示</title>
+    <script type="text/javascript" src="table.js"></script>
+
+    <style type="text/css">
+    .container{
+      margin:0 auto;
+      width:600px;
+    }
+    #scene{
+      border:1px solid black;
+    }
+
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<canvas id="grating_area"  width ="600"  height = "600"></canvas>
+</div>
+
+</body>
+<script type="text/javascript">
+ function pr_grating(ori, grate,grating_area)
+    {
+    var bk = document.getElementById("grating_area");
+    var bk_cxt = bk.getContext("2d");
+    bk_cxt.fillStyle = "#808080";
+    bk_cxt.fillRect(0,0,bk_width,bk_width);
+
+
+    var ori_h =ori/180*Math.PI;
+    var sq2 = Math.sqrt(2);
+    bk_cxt.rotate(ori_h);
+   
+    dx = (sq2*gra_width+2*sq2*mar_width)*Math.sin(ori_h/2)*Math.cos(Math.PI/4-ori_h/2);
+    dy = (sq2*gra_width+2*sq2*mar_width)*Math.sin(ori_h/2)*Math.sin(Math.PI/4-ori_h/2);         
+
+
+    var size = Math.min(grate.width,grate.height);
+    bk_cxt.drawImage(grate,0,0,size,size,mar_width+dy,mar_width-dx,gra_width,gra_width);
+    bk_cxt.rotate(-ori_h);
+
+    }
+
+    function insert_flg(str,flg,sn){
+    var newstr="";
+    for(var i=0;i<str.length+1;i++){
+        if(i<sn){newstr += str[i];}
+        else if(i == sn){newstr += flg;}
+        else{newstr += str[i-1];}
+    }      
+    return newstr;
+    }
+
+
+var bk_width = 600;
+var gra_width = bk_width/2;
+var mar_width = (bk_width-gra_width)/2;
+var ori_src = "images/grating.png"; 
+for(var ii = 0; ii<3; ii++){
+ var grate = new Image();
+ n_src = insert_flg(ori_src,ii, 14)
+ grate.src = n_src; 
+ pr_grating(45, grate,grating_area)
+}
+
+
+
+</script>
+ </html>

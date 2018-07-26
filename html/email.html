@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+ <head>
+<meta charset="utf-8" />
+<title></title>
+ </head>
+<table id='tab'>
+</table>
+
+
+ <body>
+  <div id="createTable">
+
+  </div>
+ </body>
+
+ <center>
+
+ <p>重复实验次数:</p> 
+ <input type="text" id="r_times_b" />
+ <p>测试角度个数:</p>
+<input type="text" id="num_oris_b" />
+ <p>角度差异大小:</p>
+<input type="text" id="de_ang_b" />
+
+<br/> <br/> <br/>
+ 
+<input type="button" id = "confirm" value="send" />
+ </center>
+
+<script>
+function clearall(){
+document.body.innerHTML="";
+}
+
+function pre_test(){
+    var cb = document.getElementById('confirm');
+    cb.onclick = function(){     
+    r_times = document.getElementById('r_times_b').value;
+    num_oris = document.getElementById('num_oris_b').value;
+    de_ang = document.getElementById('de_ang_b').value;
+    clearall()
+    localStorage.setItem('obj', JSON.stringify({ 
+  r_times: r_times, 
+  num_oris:num_oris,
+  de_ang:de_ang  
+}));
+   window.close();
+  }
+}
+
+pre_test();
+
+</script>
+ </html>

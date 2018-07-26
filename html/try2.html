@@ -1,0 +1,47 @@
+<html>
+<head>
+<canvas id="grating_area"  width ="600"  height = "600"></canvas>
+<script type="text/javascript">
+
+	function insert_flg(str,flg,sn){
+    var newstr="";
+    for(var i=0;i<str.length+1;i++){
+        if(i<sn){newstr += str[i];}
+        else if(i == sn){newstr += flg;}
+        else{newstr += str[i-1];}
+    }      
+    return newstr;
+    }
+
+
+
+    var flg = 0;
+    var sn =14;
+    var str = "images/grating.png";
+    var newstr=insert_flg(str,flg, sn);
+
+    var grate = new Image();  
+	grate.src = newstr; 
+	var bk = document.getElementById("grating_area");
+	var bk_cxt = bk.getContext("2d");
+
+	bk_cxt.drawImage(grate,0,0);
+
+
+
+
+
+
+
+
+
+
+</script>
+</head>
+
+<body>
+
+</body>
+
+
+</html>
