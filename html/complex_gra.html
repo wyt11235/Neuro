@@ -1,0 +1,405 @@
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+
+
+
+<style type="text/css">
+    .container{
+      margin:0 auto;
+      width:600px;
+    }
+    #scene{
+      border:1px solid black;
+    }
+</style>
+
+<script type="text/javascript">
+var laytime = 300;
+var bk_width = 600;
+var gra_width = bk_width/2;
+var mar_width = (bk_width-gra_width)/2;
+var r_times = prompt("请输入重复实验次数", 3);
+var amout =21*r_times;
+
+var num_oris = prompt("请输入测试的角度个数", 7);
+var de_ang = prompt("请输入角度之间的差", 0.5);
+var ori_s = [];
+
+for(var ii =0; ii <num_oris;ii++){
+	ori_s[ii] = -Math.floor(num_oris/2)*de_ang + ii*de_ang
+}
+
+  
+
+result_table = []
+for(var iter = 0; iter < 21*r_times; iter++){
+    result_table[iter]=0;
+}
+ 
+
+</script>
+
+
+
+
+<script type="text/javascript">
+	
+	function datadealing(){
+
+var rorder = testresult.rand_order;
+var rand_result = testresult.rand_result;
+
+
+var amount  = rorder.length;
+
+var rresult = [];
+for (var i = 0; i< amount ; i++){
+    rresult[i] = rand_result[i]; 
+}
+
+
+var order_result = [];
+for (var i = 0; i< amount ; i++){
+    order_result[i] = -1; 
+}
+
+alert("结果已可以输出")
+var tmp = [];
+for (var ii = 0; ii< amount ; ii++){
+    var No = rorder[ii];
+    order_result[No] = rand_result[ii];
+}
+
+order_result
+
+
+var ct = document.getElementById('ctab');
+
+ct.onclick = function(){
+cre_tab(order_result, r_times);
+sa_tab();
+}
+
+}
+
+
+    function pr_grating(ori, grate,grating_area)
+    {
+    var bk = document.getElementById("grating_area");
+    var bk_cxt = bk.getContext("2d");
+
+    bk_cxt.fillStyle = "#808080";
+    bk_cxt.fillRect(0,0,bk_width,bk_width);
+
+    
+    var outgra = new Image();
+    outgra.src = "images/gratingbk.png";
+    var size = Math.min(grate.width,grate.height);
+    var outsize = Math.min(outgra.width,outgra.height);
+
+////
+
+    var outgra_width = gra_width*1.4;
+    var outmar_width = (bk_width-outgra_width)/2;
+
+
+    var outori_h =-10/180*Math.PI;
+    var sq2 = Math.sqrt(2);
+    bk_cxt.rotate(outori_h);
+   
+    dx = (sq2*outgra_width+2*sq2*outmar_width)*Math.sin(outori_h/2)*Math.cos(Math.PI/4-outori_h/2);
+    dy = (sq2*outgra_width+2*sq2*outmar_width)*Math.sin(outori_h/2)*Math.sin(Math.PI/4-outori_h/2);         
+
+    bk_cxt.drawImage(outgra,0,0,outsize,outsize,outmar_width+dy,outmar_width-dx,outgra_width,outgra_width);
+    bk_cxt.rotate(-outori_h);
+
+////
+    var ori_h =ori/180*Math.PI;
+    var sq2 = Math.sqrt(2);
+    bk_cxt.rotate(ori_h);
+   
+    dx = (sq2*gra_width+2*sq2*mar_width)*Math.sin(ori_h/2)*Math.cos(Math.PI/4-ori_h/2);
+    dy = (sq2*gra_width+2*sq2*mar_width)*Math.sin(ori_h/2)*Math.sin(Math.PI/4-ori_h/2);         
+
+    bk_cxt.drawImage(grate,0,0,size,size,mar_width+dy,mar_width-dx,gra_width,gra_width);
+    bk_cxt.rotate(-ori_h);
+
+    }
+
+    function pr_blank(grating_area)
+    {
+    var bk = document.getElementById("grating_area");
+    var bk_cxt = bk.getContext("2d");
+    bk_cxt.fillStyle = "#808080";
+    bk_cxt.fillRect(0,0,bk_width,bk_width);
+}
+
+    function pr_circle(grating_area)
+    {
+    var bk = document.getElementById("grating_area");
+    var bk_cxt = bk.getContext("2d");
+    bk_cxt.fillStyle = "#808080";
+    bk_cxt.fillRect(0,0,bk_width,bk_width);
+    bk_cxt.fillStyle = "white";
+    bk_cxt.beginPath();
+    bk_cxt.arc(bk_width/2,bk_width/2,15,0,Math.PI*2,true);
+    bk_cxt.closePath();
+    bk_cxt.fill();
+
+
+    }
+
+    function onetest(ori,grate,grating_area)
+    {
+
+    pr_circle();
+    setTimeout('pr_grating("+ori+", grate,grating_area);',500)    
+    setTimeout('pr_blank(grating_area)',500+laytime);
+
+    }
+
+
+    function shuffle(array){
+    var tmp,current,top=array.length;
+    if(top) while(--top){
+        current = Math.floor(Math.random()*(top+1));
+        tmp = array[current];
+        array[current] = array[top];
+        array[top] = tmp;
+    }
+    return array
+    }
+
+    function insert_flg(str,flg,sn){
+    var newstr="";
+    for(var i=0;i<str.length+1;i++){
+        if(i<sn){newstr += str[i];}
+        else if(i == sn){newstr += flg;}
+        else{newstr += str[i-1];}
+    }      
+    return newstr;
+    }
+
+
+    function dur_test(r_times){
+
+var result=[];
+for(var iter=0;iter<10;iter++){
+    result[iter] = 0;
+}
+
+
+var c1 = document.getElementById('click_l');
+var c2 = document.getElementById('click_r');
+
+////////
+var amout =3*num_oris*r_times;
+
+
+var order = [];
+for(var i = 0;i<amout;i++){
+    order[i] = i;
+}
+rorder = shuffle(order);
+
+var con_order = [];
+for(var i = 0;i<amout;i++){
+    con_order[i] = Math.floor(i/(num_oris*r_times));
+}
+
+var rcon_order = [];
+for(var i = 0;i<amout;i++){
+    rcon_order[i] = con_order[rorder[i]];
+}
+
+
+var ang_order = [];
+for(var i = 0;i<amout;i++){
+    ang_order[i] = Math.floor(i/r_times)%num_oris;
+}
+
+var rang_order = [];
+for(var i = 0;i<amout;i++){
+    rang_order[i] = ang_order[rorder[i]];
+}
+
+///////////
+
+    var iter = 0;
+    var ori_src = "images/grating.png"; 
+
+    var ori_r = rang_order[iter];
+    var ori = ori_s[ori_r];
+    var grate = new Image();
+    n_src = insert_flg(ori_src,rcon_order[iter], 14)
+    grate.src = n_src;   
+
+
+    onetest(ori,grate,grating_area);
+    
+    c1.onclick = function(){
+    if(iter!=amout) {
+        result[iter] = 1;
+        iter++;
+        var ori_r = rang_order[iter];
+        var ori = ori_s[ori_r];
+        var grate = new Image();
+        n_src = insert_flg(ori_src,rcon_order[iter], 14)
+        grate.src = n_src; 
+        onetest(ori,grate,grating_area);         
+    }
+    else{
+        alert('结束');
+        datadealing();
+    }
+    }
+
+    c2.onclick = function(){ 
+    if(iter!=amout) {
+        result[iter] = 2;
+        iter++;
+        var ori_r = rang_order[iter];
+        var ori = ori_s[ori_r];
+        var grate = new Image();
+        n_src = insert_flg(ori_src,rcon_order[iter], 14)
+        grate.src = n_src; 
+        onetest(ori,grate,grating_area);   
+    }
+    else{
+        alert('结束')
+        datadealing();
+    }
+    }
+
+
+return  testresult = {
+'rand_result': result,
+'rand_order': rorder
+};
+
+}
+
+function cre_tab(oriarr, r_times){
+
+var newarr = [];
+for(var i = 0;i<3*num_oris;i++){
+    var tmparr = [];
+    for(var ii = 0 ; ii<r_times ;ii++){
+        tmparr[ii] = oriarr[i*r_times+ii]
+    } 
+    newarr[i] = tmparr;
+}
+
+    var table = document.getElementById("tab"); //创建一个表格
+    var tbody = document.createElement("tbody"); //创建表的主体
+
+for(var i = 0 ; i<r_times ;i++){
+    var row0 = tbody.insertRow(i);
+    for (var ii = 0 ; ii<3*num_oris ;ii++){
+    row0.insertCell(ii).appendChild(document.createTextNode(newarr[ii][i]));
+    }
+}
+table.appendChild(tbody);
+
+}
+
+
+function sa_tab(){
+
+var oHtml = document.getElementsByClassName('tableA')[0].outerHTML;
+var excelHtml = `
+    <html>
+      <head>
+        <meta charset='utf-8' />
+      </head>
+      <body>
+        ${oHtml}
+      </body>
+    </html>
+  `;
+
+  var excelBlob = new Blob([excelHtml], {type: 'application/vnd.ms-excel'})
+
+  // 创建一个a标签
+var oA = document.createElement('a');
+// 利用URL.createObjectURL()方法为a元素生成blob URL
+oA.href = URL.createObjectURL(excelBlob);
+// 给文件命名
+oA.download = 'test_result.xls';
+// 模拟点击
+oA.click();
+
+}
+
+</script>
+
+</head>
+
+
+<body>
+
+<h1 align="center"> <b>grate test </b> </h1>
+
+
+<div class="container">
+<canvas id="grating_area"  width ="600"  height = "600"></canvas>
+</div>
+
+<div id="div_choose">
+
+<h1 align="center" id = "startPara"> 点击开始 </h1>)
+
+    <center>
+    <button id="click_l" onclick="ans = 0" style="height: 100px;width: 300px;font-size: 20px"> 向左倾斜 </button>
+    <button id="click_r" onclick="ans = 1" style="height: 100px;width: 300px;font-size: 20px"> 向右倾斜</button>
+    </center>
+</div>
+
+
+<div id="table">
+<center>
+
+ <h1 align="center"> br\br\br\ </h1>   
+<button id="ctab" style="height: 50px;width: 200px;font-size: 20px"> 输出结果 </button>
+<table id='tab' class="tableA"></table>
+</center>
+</div>
+
+
+<script type="text/javascript">
+var ori_src = "images/grating.png"; 
+
+for(var ii = 0; ii<3; ii++){
+ var grate = new Image();
+ n_src = insert_flg(ori_src,ii, 14)
+ grate.src = n_src; 
+ pr_grating(45, grate,grating_area)
+}
+
+
+var stp = document.getElementById("startPara");
+
+stp.onclick = function() {
+	// body...
+	var testresult = dur_test(r_times);
+	stp.innerHTML = "请选择你认为光栅倾斜的方向";
+}
+
+
+//var testresult = dur_test(r_times);
+
+
+
+    
+</script>
+
+
+
+
+</body>
+</html>
